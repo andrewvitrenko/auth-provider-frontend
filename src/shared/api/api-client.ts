@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import cookie from 'js-cookie';
 
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '../config/auth';
 import type { TError } from '../model/api';
 
 export const apiClient = axios.create({
@@ -11,7 +12,7 @@ apiClient.interceptors.request.use(
   (config) => {
     config.headers = config.headers ?? {};
 
-    const accessToken = cookie.get('accessToken');
+    const accessToken = cookie.get(ACCESS_TOKEN_KEY);
 
     if (accessToken && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${accessToken}`;
@@ -35,7 +36,7 @@ apiClient.interceptors.response.use(
       // @ts-expect-error custom property
       originalRequest._retry = true; // Mark the request as retried to avoid infinite loops.
       try {
-        const refreshToken = cookie.get('refreshToken'); // Retrieve the stored refresh token.
+        const refreshToken = cookie.get(REFRESH_TOKEN_KEY); // Retrieve the stored refresh token.
         // Make a request to your auth server to refresh the token.
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
@@ -44,8 +45,8 @@ apiClient.interceptors.response.use(
         );
         const { accessToken, refreshToken: newRefreshToken } = response.data;
         // Store the new access and refresh tokens.
-        cookie.set('accessToken', accessToken);
-        cookie.set('refreshToken', newRefreshToken);
+        cookie.set(ACCESS_TOKEN_KEY, accessToken);
+        cookie.set(REFRESH_TOKEN_KEY, newRefreshToken);
         // Update the authorization header with the new access token.
         apiClient.defaults.headers.common['Authorization'] =
           `Bearer ${accessToken}`;
@@ -53,8 +54,8 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         // Handle refresh token errors by clearing stored tokens and redirecting to the login page.
         console.error('Token refresh failed:', refreshError);
-        cookie.remove('accessToken');
-        cookie.remove('refreshToken');
+        cookie.remove(ACCESS_TOKEN_KEY);
+        cookie.remove(REFRESH_TOKEN_KEY);
         window.location.href = '/login';
         throw refreshError;
       }
