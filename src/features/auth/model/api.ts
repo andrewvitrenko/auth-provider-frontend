@@ -6,4 +6,6 @@ export type TLoginPayload = {
 export type TSignUpPayload = {
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
 };

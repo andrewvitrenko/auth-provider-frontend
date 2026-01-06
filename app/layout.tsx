@@ -32,7 +32,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <ThemeProvider>
           <QueryProvider>{children}</QueryProvider>
         </ThemeProvider>
-        <Toaster />
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );
