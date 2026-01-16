@@ -6,16 +6,19 @@ import { useController } from 'react-hook-form';
 import { cn } from '@/shared/lib/utils';
 
 import { Field, FieldError, FieldLabel } from '../field';
-import { Input } from '../input';
+import { Textarea } from '../textarea';
 
-type TInputFieldProps = Omit<ComponentPropsWithoutRef<'input'>, 'children'> & {
+type TTextareaFieldProps = Omit<
+  ComponentPropsWithoutRef<'textarea'>,
+  'children'
+> & {
   containerClassName?: string;
   label?: string | ReactNode;
   name: string;
   shouldUnregister?: boolean;
 };
 
-export const InputField: FC<TInputFieldProps> = ({
+export const TextareaField: FC<TTextareaFieldProps> = ({
   label,
   containerClassName,
   name,
@@ -31,7 +34,7 @@ export const InputField: FC<TInputFieldProps> = ({
 
   return (
     <Field className={containerClassName} data-disabled={props.disabled}>
-      <Input
+      <Textarea
         id={name}
         className={cn('order-2', className)}
         required={required}

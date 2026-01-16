@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
@@ -111,7 +112,7 @@ export const SignupForm: FC = () => {
                   Create Account
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="/login">Log in</a>
+                  Already have an account? <Link href="/login">Log in</Link>
                 </FieldDescription>
               </FieldGroup>
             </FieldGroup>

@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
@@ -71,7 +72,7 @@ export const LoginForm: FC = () => {
                 <PasswordField
                   name="password"
                   placeholder="Password"
-                  autoComplete="password"
+                  autoComplete="current-password"
                   disabled={isPending}
                   label={
                     <div className="flex items-center">
@@ -94,7 +95,8 @@ export const LoginForm: FC = () => {
                     {isPending ? 'Logging in...' : 'Login'}
                   </Button>
                   <FieldDescription className="text-center">
-                    Don&apos;t have an account? <a href="/sign-up">Sign up</a>
+                    Don&apos;t have an account?{' '}
+                    <Link href="/sign-up">Sign up</Link>
                   </FieldDescription>
                 </Field>
               </FieldGroup>

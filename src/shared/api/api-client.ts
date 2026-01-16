@@ -3,6 +3,7 @@ import cookie from 'js-cookie';
 
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '../config/auth';
 import type { TError } from '../model/api';
+import type { TTokens } from '../model/auth';
 
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -38,18 +39,23 @@ apiClient.interceptors.response.use(
       try {
         const refreshToken = cookie.get(REFRESH_TOKEN_KEY); // Retrieve the stored refresh token.
         // Make a request to your auth server to refresh the token.
-        const response = await axios.post(
+        const response = await axios.post<TTokens>(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
           undefined,
           { headers: { Authorization: `Bearer ${refreshToken}` } },
         );
-        const { accessToken, refreshToken: newRefreshToken } = response.data;
+        const { access_token, refresh_token: newRefreshToken } = response.data;
         // Store the new access and refresh tokens.
-        cookie.set(ACCESS_TOKEN_KEY, accessToken);
-        cookie.set(REFRESH_TOKEN_KEY, newRefreshToken);
+        cookie.set(ACCESS_TOKEN_KEY, access_token, {
+          secure: true,
+          sameSite: 'strict',
+        });
+        cookie.set(REFRESH_TOKEN_KEY, newRefreshToken, {
+          secure: true,
+          sameSite: 'strict',
+        });
         // Update the authorization header with the new access token.
-        apiClient.defaults.headers.common['Authorization'] =
-          `Bearer ${accessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${access_token}`;
         return apiClient(originalRequest); // Retry the original request with the new access token.
       } catch (refreshError) {
         // Handle refresh token errors by clearing stored tokens and redirecting to the login page.

@@ -59,7 +59,7 @@ const itemVariants = cva(
   },
 );
 
-type TItemProps = useRender.ComponentProps<'div'> &
+export type TItemProps = useRender.ComponentProps<'div'> &
   VariantProps<typeof itemVariants>;
 
 export const Item: FC<TItemProps> = ({

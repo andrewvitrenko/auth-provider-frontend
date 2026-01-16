@@ -67,17 +67,18 @@ export const PasswordField: FC<TPasswordFieldProps> = ({
           className="absolute top-1/2 right-2 -translate-y-1/2"
           variant="ghost"
           size="icon"
+          aria-label={showPassword ? 'Hide password' : 'Show password'}
           onClick={() => setShowPassword(!showPassword)}
         >
           <span className="sr-only">{showPassword ? 'Hide' : 'Show'}</span>
           {showPassword ? (
-            <Eye className="h-5 w-5" />
-          ) : (
             <EyeOff className="h-5 w-5" />
+          ) : (
+            <Eye className="h-5 w-5" />
           )}
         </Button>
       </div>
-      {error && <FieldError>{error.message}</FieldError>}
+      {error && <FieldError id={`${name}-error`}>{error.message}</FieldError>}
     </Field>
   );
 };
