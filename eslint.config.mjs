@@ -29,7 +29,7 @@ const eslintConfig = defineConfig([
     rules: {
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
-        'warn',
+        'error',
         {
           vars: 'all',
           varsIgnorePattern: '^_',
@@ -51,6 +51,23 @@ const eslintConfig = defineConfig([
       'unicorn/prefer-global-this': 'off',
       'unicorn/no-array-callback-reference': 'off',
       'unicorn/filename-case': ['error', { case: 'kebabCase' }],
+    },
+  },
+  {
+    files: ['**/*.{js,jsx,mjs,ts,tsx,mts,cts}'],
+    rules: {
+      'react/function-component-definition': [
+        'error',
+        {
+          namedComponents: 'arrow-function',
+          unnamedComponents: 'arrow-function',
+        },
+      ],
+    },
+  },
+  {
+    rules: {
+      'no-console': ['error', { allow: ['warn', 'error'] }],
     },
   },
   // Override default ignores of eslint-config-next.

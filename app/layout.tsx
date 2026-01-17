@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { FC, PropsWithChildren } from 'react';
 
+import { Toaster } from '@/shared/ui/sonner';
+
 import { QueryProvider } from './providers/query-provider';
 import { ThemeProvider } from './providers/theme-provider';
 
@@ -25,13 +27,12 @@ export const metadata: Metadata = {
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider>
           <QueryProvider>{children}</QueryProvider>
         </ThemeProvider>
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );
